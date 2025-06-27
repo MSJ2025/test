@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'destination_page.dart';
-import 'data_page.dart';
+import 'lesson_page.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeMode themeMode;
   final ValueChanged<bool> onToggleTheme;
-  final Set<String> favorites;
-  final ValueChanged<String> onToggleFavorite;
-
   const HomePage({
     required this.themeMode,
     required this.onToggleTheme,
-    required this.favorites,
-    required this.onToggleFavorite,
     super.key,
   });
 
@@ -20,7 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Guide Corse'),
+        title: const Text('Cours de Corse'),
         actions: [
           Row(
             children: [
@@ -38,7 +32,7 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Découvrez les plus belles destinations de Corse',
+              'Commencez votre apprentissage du corse',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -46,25 +40,11 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => DestinationPage(
-                      favorites: favorites,
-                      onToggleFavorite: onToggleFavorite,
-                    ),
+                    builder: (_) => const LessonPage(),
                   ),
                 );
               },
-              child: const Text('Voir les destinations'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const DataPage(),
-                  ),
-                );
-              },
-              child: const Text('Explorer les données publiques'),
+              child: const Text('Commencer les leçons'),
             ),
           ],
         ),

@@ -1,18 +1,14 @@
 # appli
 
-Guide touristique simplifié de la Corse. Ce projet démontre comment afficher
-quelques destinations emblématiques de l'île à l'aide de Flutter.
-Les données sont récupérées depuis le portail open data
-[data.corsica](https://www.data.corsica/pages/portail/).
+Application d'apprentissage de la langue corse inspirée de Duolingo.
+Ce projet propose des leçons interactives pour découvrir les bases du corse.
 
 ## Fonctionnalités
 
-- Page d'accueil avec introduction et accès aux destinations
+- Page d'accueil présentant l'application
 - Mode sombre activable depuis l'interface
-- Système de favoris enregistré localement
-- Cartes interactives intégrées pour chaque lieu
-- Images illustratives pour les destinations
-- Nouvelle page listant des données publiques issues de data.corsica
+- Premières leçons avec questions à choix multiples
+- Progression simple indiquée par des messages de validation
 
 ## Getting Started
 
