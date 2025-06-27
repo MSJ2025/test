@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'lesson_page.dart';
+import 'destination_page.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeMode themeMode;
   final ValueChanged<bool> onToggleTheme;
+  final Set<String> favorites;
+  final ValueChanged<String> onToggleFavorite;
   const HomePage({
     required this.themeMode,
     required this.onToggleTheme,
+    required this.favorites,
+    required this.onToggleFavorite,
     super.key,
   });
 
@@ -51,6 +56,25 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: const Text('Commencer les leçons'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF58CC02),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DestinationPage(
+                      favorites: favorites,
+                      onToggleFavorite: onToggleFavorite,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Explorer les destinations'),
             ),
           ],
         ),

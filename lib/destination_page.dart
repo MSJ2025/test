@@ -42,7 +42,7 @@ const List<Destination> destinations = [
   ),
 ];
 
-class DestinationPage extends StatelessWidget {
+class DestinationPage extends StatefulWidget {
   final Set<String> favorites;
   final ValueChanged<String> onToggleFavorite;
 
@@ -51,6 +51,13 @@ class DestinationPage extends StatelessWidget {
     required this.onToggleFavorite,
     super.key,
   });
+
+  @override
+  State<DestinationPage> createState() => _DestinationPageState();
+}
+
+class _DestinationPageState extends State<DestinationPage> {
+  bool _showOnlyFavorites = false;
 
   void _openMap(BuildContext context, Destination dest) {
     Navigator.of(context).push(
@@ -65,13 +72,30 @@ class DestinationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final items = _showOnlyFavorites
+        ? destinations.where((d) => widget.favorites.contains(d.name)).toList()
+        : destinations;
     return Scaffold(
-      appBar: AppBar(title: const Text('Destinations')),
+      appBar: AppBar(
+        title: const Text('Destinations'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              _showOnlyFavorites ? Icons.star : Icons.star_border,
+            ),
+            onPressed: () {
+              setState(() {
+                _showOnlyFavorites = !_showOnlyFavorites;
+              });
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
-        itemCount: destinations.length,
+        itemCount: items.length,
         itemBuilder: (context, index) {
-          final dest = destinations[index];
-          final isFav = favorites.contains(dest.name);
+          final dest = items[index];
+          final isFav = widget.favorites.contains(dest.name);
           return Card(
             margin: const EdgeInsets.all(8),
             child: ListTile(
@@ -83,7 +107,7 @@ class DestinationPage extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(isFav ? Icons.star : Icons.star_border, color: Colors.amber),
-                    onPressed: () => onToggleFavorite(dest.name),
+                    onPressed: () => widget.onToggleFavorite(dest.name),
                   ),
                   IconButton(
                     icon: const Icon(Icons.map),
