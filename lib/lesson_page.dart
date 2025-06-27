@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LessonPage extends StatefulWidget {
   const LessonPage({super.key});
@@ -30,11 +31,13 @@ class _LessonPageState extends State<LessonPage> {
   int _currentIndex = 0;
   String? selected;
   late List<Lesson> _loadedLessons;
+  SharedPreferences? _prefs;
 
   @override
   void initState() {
     super.initState();
     _lessonsFuture = _loadLessons();
+    _loadProgress();
   }
 
   Future<List<Lesson>> _loadLessons() async {
@@ -42,6 +45,13 @@ class _LessonPageState extends State<LessonPage> {
     final jsonMap = jsonDecode(data) as Map<String, dynamic>;
     final list = jsonMap['lessons'] as List<dynamic>;
     return list.map((e) => Lesson.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<void> _loadProgress() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _currentIndex = _prefs?.getInt('lesson_index') ?? 0;
+    });
   }
 
   void _select(String value) {
@@ -52,6 +62,13 @@ class _LessonPageState extends State<LessonPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(isCorrect ? 'Correct !' : 'Incorrect')),
     );
+    if (isCorrect) {
+      _currentIndex = (_currentIndex + 1).clamp(0, _loadedLessons.length - 1);
+      _prefs?.setInt('lesson_index', _currentIndex);
+      setState(() {
+        selected = null;
+      });
+    }
   }
 
   @override
@@ -69,10 +86,15 @@ class _LessonPageState extends State<LessonPage> {
               return Center(child: Text('Erreur: ${snapshot.error}'));
             } else {
               _loadedLessons = snapshot.data!;
+              _currentIndex = _currentIndex.clamp(0, _loadedLessons.length - 1);
               final lesson = _loadedLessons[_currentIndex];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  LinearProgressIndicator(
+                    value: _currentIndex / _loadedLessons.length,
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     lesson.question,
                     style: Theme.of(context).textTheme.titleLarge,
