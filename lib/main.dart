@@ -1,38 +1,78 @@
 import 'package:flutter/material.dart';
-import 'destination_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'home_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+  final Set<String> _favorites = <String>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favs = prefs.getStringList('favorites') ?? <String>[];
+    _favorites.addAll(favs);
+    final isDark = prefs.getBool('darkMode') ?? false;
+    setState(() {
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
+  Future<void> _savePrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('favorites', _favorites.toList());
+    await prefs.setBool('darkMode', _themeMode == ThemeMode.dark);
+  }
+
+  void _toggleTheme(bool value) {
+    setState(() {
+      _themeMode = value ? ThemeMode.dark : ThemeMode.light;
+    });
+    _savePrefs();
+  }
+
+  void _toggleFavorite(String name) {
+    setState(() {
+      if (_favorites.contains(name)) {
+        _favorites.remove(name);
+      } else {
+        _favorites.add(name);
+      }
+    });
+    _savePrefs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Guide Corse',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const DestinationPage(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode,
+      home: HomePage(
+        themeMode: _themeMode,
+        onToggleTheme: _toggleTheme,
+        favorites: _favorites,
+        onToggleFavorite: _toggleFavorite,
+      ),
     );
   }
 }
-
