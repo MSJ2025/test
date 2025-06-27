@@ -15,7 +15,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.light;
-  final Set<String> _favorites = <String>{};
 
   @override
   void initState() {
@@ -25,8 +24,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    final favs = prefs.getStringList('favorites') ?? <String>[];
-    _favorites.addAll(favs);
     final isDark = prefs.getBool('darkMode') ?? false;
     setState(() {
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
@@ -35,7 +32,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _savePrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('favorites', _favorites.toList());
     await prefs.setBool('darkMode', _themeMode == ThemeMode.dark);
   }
 
@@ -46,21 +42,11 @@ class _MyAppState extends State<MyApp> {
     _savePrefs();
   }
 
-  void _toggleFavorite(String name) {
-    setState(() {
-      if (_favorites.contains(name)) {
-        _favorites.remove(name);
-      } else {
-        _favorites.add(name);
-      }
-    });
-    _savePrefs();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Guide Corse',
+      title: 'Corsican Lingo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -70,8 +56,6 @@ class _MyAppState extends State<MyApp> {
       home: HomePage(
         themeMode: _themeMode,
         onToggleTheme: _toggleTheme,
-        favorites: _favorites,
-        onToggleFavorite: _toggleFavorite,
       ),
     );
   }
