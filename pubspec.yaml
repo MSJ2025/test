@@ -37,6 +37,7 @@ dependencies:
   google_maps_flutter: ^2.2.5
   shared_preferences: ^2.2.2
   url_launcher: ^6.1.11
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
