@@ -9,6 +9,8 @@ Ce projet propose des leçons interactives pour découvrir les bases du corse.
 - Mode sombre activable depuis l'interface
 - Premières leçons avec questions à choix multiples
 - Progression simple indiquée par des messages de validation
+- Questions chargées depuis un fichier JSON
+- Couleurs inspirées de Duolingo
 
 ## Getting Started
 
