@@ -3,9 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:appli/main.dart';
 
 void main() {
-  testWidgets('Home page shows welcome text', (WidgetTester tester) async {
+  testWidgets('Navigation via la barre du bas', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-    expect(find.text('Commencez votre apprentissage du corse'), findsOneWidget);
-    expect(find.text('Commencer les leçons'), findsOneWidget);
+
+    // Page par défaut : leçon
+    expect(find.widgetWithText(AppBar, 'Leçon'), findsOneWidget);
+
+    // Aller vers Destinations
+    await tester.tap(find.text('Destinations'));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(AppBar, 'Destinations'), findsOneWidget);
+
+    // Aller vers Données
+    await tester.tap(find.text('Données'));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(AppBar, 'Données publiques'), findsOneWidget);
   });
 }

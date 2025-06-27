@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home_page.dart';
+import 'lesson_page.dart';
+import 'destination_page.dart';
+import 'data_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,9 +55,66 @@ class _MyAppState extends State<MyApp> {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      home: HomePage(
-        themeMode: _themeMode,
-        onToggleTheme: _toggleTheme,
+      home: const MainNavigation(),
+    );
+  }
+}
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  int _selectedIndex = 0;
+  final Set<String> _favorites = <String>{};
+
+  void _toggleFavorite(String name) {
+    setState(() {
+      if (_favorites.contains(name)) {
+        _favorites.remove(name);
+      } else {
+        _favorites.add(name);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = [
+      const LessonPage(),
+      DestinationPage(
+        favorites: _favorites,
+        onToggleFavorite: _toggleFavorite,
+      ),
+      const DataPage(),
+    ];
+
+    return Scaffold(
+      body: pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Leçons',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.place),
+            label: 'Destinations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.insert_drive_file),
+            label: 'Données',
+          ),
+        ],
       ),
     );
   }
