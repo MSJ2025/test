@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Corsican Lingo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF58CC02)),
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(),

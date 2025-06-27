@@ -1,0 +1,19 @@
+{
+  "lessons": [
+    {
+      "question": "Comment dit-on \"bonjour\" en corse ?",
+      "options": ["Bonghjornu", "Salute", "Ciao"],
+      "answer": "Bonghjornu"
+    },
+    {
+      "question": "Comment dit-on \"merci\" en corse ?",
+      "options": ["Grazie", "Per piacè", "Salute"],
+      "answer": "Grazie"
+    },
+    {
+      "question": "Que signifie \"a casa\" ?",
+      "options": ["La maison", "La plage", "La montagne"],
+      "answer": "La maison"
+    }
+  ]
+}
