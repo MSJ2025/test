@@ -1,6 +1,9 @@
 # appli
 
-A new Flutter project.
+Guide touristique simplifié de la Corse. Ce projet démontre comment afficher
+quelques destinations emblématiques de l'île à l'aide de Flutter.
+Les données pourront être enrichies grâce au portail open data
+[data.corsica](https://www.data.corsica/pages/portail/).
 
 ## Getting Started
 
