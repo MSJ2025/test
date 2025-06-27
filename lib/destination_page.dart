@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'map_page.dart';
 
 class Destination {
   final String name;
   final String description;
   final double lat;
   final double lng;
+  final String imageUrl;
 
-  const Destination(this.name, this.description, this.lat, this.lng);
+  const Destination(
+    this.name,
+    this.description,
+    this.lat,
+    this.lng,
+    this.imageUrl,
+  );
 }
 
 const List<Destination> destinations = [
-  Destination('Ajaccio', 'Capitale de la Corse du Sud, connue pour sa vieille ville et sa cathédrale.', 41.919229, 8.738635),
-  Destination('Bonifacio', 'Ville perchée sur des falaises de calcaire blanc offrant un panorama exceptionnel.', 41.3879, 9.159),
-  Destination('Calvi', 'Port de plaisance réputé pour sa citadelle génoise et ses plages.', 42.559, 8.758),
+  Destination(
+    'Ajaccio',
+    'Capitale de la Corse du Sud, connue pour sa vieille ville et sa cathédrale.',
+    41.919229,
+    8.738635,
+    'https://upload.wikimedia.org/wikipedia/commons/8/80/Ajaccio_vue.jpg',
+  ),
+  Destination(
+    'Bonifacio',
+    'Ville perchée sur des falaises de calcaire blanc offrant un panorama exceptionnel.',
+    41.3879,
+    9.159,
+    'https://upload.wikimedia.org/wikipedia/commons/b/b2/Bonifacio_haut.jpg',
+  ),
+  Destination(
+    'Calvi',
+    'Port de plaisance réputé pour sa citadelle génoise et ses plages.',
+    42.559,
+    8.758,
+    'https://upload.wikimedia.org/wikipedia/commons/5/5f/Calvi_vue.jpg',
+  ),
 ];
 
 class DestinationPage extends StatelessWidget {
@@ -26,11 +52,15 @@ class DestinationPage extends StatelessWidget {
     super.key,
   });
 
-  Future<void> _openMap(double lat, double lng) async {
-    final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=\$lat,\$lng');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    }
+  void _openMap(BuildContext context, Destination dest) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MapPage(
+          position: LatLng(dest.lat, dest.lng),
+          title: dest.name,
+        ),
+      ),
+    );
   }
 
   @override
@@ -45,6 +75,7 @@ class DestinationPage extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.all(8),
             child: ListTile(
+              leading: Image.network(dest.imageUrl, width: 50, height: 50, fit: BoxFit.cover),
               title: Text(dest.name),
               subtitle: Text(dest.description),
               trailing: Row(
@@ -56,7 +87,7 @@ class DestinationPage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.map),
-                    onPressed: () => _openMap(dest.lat, dest.lng),
+                    onPressed: () => _openMap(context, dest),
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'destination_page.dart';
+import 'data_page.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeMode themeMode;
@@ -53,6 +54,17 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: const Text('Voir les destinations'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const DataPage(),
+                  ),
+                );
+              },
+              child: const Text('Explorer les données publiques'),
             ),
           ],
         ),

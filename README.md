@@ -2,7 +2,7 @@
 
 Guide touristique simplifié de la Corse. Ce projet démontre comment afficher
 quelques destinations emblématiques de l'île à l'aide de Flutter.
-Les données pourront être enrichies grâce au portail open data
+Les données sont récupérées depuis le portail open data
 [data.corsica](https://www.data.corsica/pages/portail/).
 
 ## Fonctionnalités
@@ -10,7 +10,9 @@ Les données pourront être enrichies grâce au portail open data
 - Page d'accueil avec introduction et accès aux destinations
 - Mode sombre activable depuis l'interface
 - Système de favoris enregistré localement
-- Accès rapide à la carte pour chaque lieu
+- Cartes interactives intégrées pour chaque lieu
+- Images illustratives pour les destinations
+- Nouvelle page listant des données publiques issues de data.corsica
 
 ## Getting Started
 
